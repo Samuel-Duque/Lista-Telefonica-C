@@ -296,10 +296,6 @@ int main() {
             case 5:
                 printf("Saindo...\n");
                 break;
-            case 6:
-                tamanhodeque(&agenda);
-                printf("%d",tamanhodeque(&agenda));
-                break;
             default:
                 printf("Opcao invalida.\n");
                 break;
