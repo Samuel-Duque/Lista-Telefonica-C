@@ -104,15 +104,13 @@ void inserirCSV(Deque *deque){
 
 }
 
-// void retirarCSV(Deque *deque,){
-//     Contato *contato= deque->inicio;
-//     FILE *arquivo;
-//     while (contato )
-//     {
-//         /* code */
-//     }
-    
-// }
+void criararquivo(){
+    FILE *arquivo;
+    arquivo = fopen("arquivo.csv","a");
+    fprintf(arquivo,"Nome,Telefone,Endereco,E-mail,id\n");
+}
+
+
 //função basica p adicionar um contato
 void adicionarContato(Deque *deque) {
     Contato *contato = malloc(sizeof(Contato));
@@ -136,11 +134,10 @@ void adicionarContato(Deque *deque) {
     contato->id = tamanhodeque(deque);
     adicionarFim(deque, contato);
     deque->tamanho++;
-    // FILE *arquivo;
-    // arquivo = fopen("arquivo.csv","w");
-    // fprintf(arquivo,"Nome,Telefone,Endereco,E-mail,id");
-    // fprintf(arquivo,"%s,%s,%s,%s,%d\n",contato->nome,contato->telefone,contato->endereco,contato->email,contato->id);
-
+    FILE *arquivo;
+    arquivo = fopen("arquivo.csv","a");
+    fprintf(arquivo,"%s,%s,%s,%s,%d\n",contato->nome,contato->telefone,contato->endereco,contato->email,contato->id);
+    fclose(arquivo);
 }
 
 void imprimirContatos(Deque *deque) {
@@ -262,7 +259,7 @@ void removerContatoPorId(Deque *deque, int id) {
 int main() {
     Deque agenda;
     inicializar(&agenda);
-
+    criararquivo();
     int opcao;
     int escolhaid;
     do {
