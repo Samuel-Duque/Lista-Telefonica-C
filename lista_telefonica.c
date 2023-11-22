@@ -11,18 +11,19 @@ typedef struct contato{
     char email[50];
     char endereco[100];
     int id;
-    int count;
+    int tamanho;
 } Contato;
 
 //estrutura da agenda
 typedef struct deque{
     Contato *inicio, *fim;
-    int count;
+    int tamanho;
 } Deque;
 
 //função para inicializar a agenda
 void inicializar(Deque *deque) {
     deque->inicio = deque->fim = NULL;
+    deque->tamanho=0;
 }
 
 //função para adicionar no inicio da agenda
@@ -83,9 +84,33 @@ Contato* removerFim(Deque *deque) {
 }
 
 int tamanhodeque(Deque *deque){
-    return deque->count;
+    return deque->tamanho;
     }
     
+
+void inserirCSV(Deque *deque){
+    int contador = 0;
+    Contato *contato= deque->inicio;
+    FILE *arquivo;
+    arquivo = fopen("arquivo.csv","a");
+    fprintf(arquivo,"Nome,Telefone,Endereco,E-mail,id\n");
+    printf("%d",tamanhodeque(deque));
+    while (contador < tamanhodeque(deque)){
+    fprintf(arquivo,"%s,%s,%s,%s,%d\n",contato->nome,contato->telefone,contato->endereco,contato->email,contato->id);
+    contador++;
+    deque++;
+    }
+    fclose(arquivo);
+
+}
+
+void criararquivo(){
+    FILE *arquivo;
+    arquivo = fopen("arquivo.csv","a");
+    fprintf(arquivo,"Nome,Telefone,Endereco,E-mail,id\n");
+}
+
+
 //função basica p adicionar um contato
 void adicionarContato(Deque *deque) {
     Contato *contato = malloc(sizeof(Contato));
@@ -106,8 +131,14 @@ void adicionarContato(Deque *deque) {
     fgets(contato->endereco, sizeof(contato->endereco), stdin);
     contato->endereco[strcspn(contato->endereco, "\n")] = 0;
 
-    contato->id = tamanhodeque(deque) + 1;
+    contato->id = tamanhodeque(deque);
     adicionarFim(deque, contato);
+    deque->tamanho++;
+    FILE *arquivo;
+    arquivo = fopen("arquivo.csv","a");
+    fprintf(arquivo,"%s,%s,%s,%s,%d\n",contato->nome,contato->telefone,contato->endereco,contato->email,contato->id);
+    fclose(arquivo);
+    
 }
 
 void imprimirContatos(Deque *deque) {
@@ -195,13 +226,13 @@ void editarContato(Deque *deque){
 }
 void removerContatoPorId(Deque *deque, int id) {
     if (deque->inicio == NULL) {
-        printf("A agenda está vazia.\n");
+        printf("A agenda esta vazia.\n");
         return;
     }
 
     Contato *contatoAtual = deque->inicio;
     while (contatoAtual != NULL) {
-        if (contatoAtual->id == id) {
+        if (contatoAtual->id == id-1) {
             // Se o contato é o primeiro da lista
             if (contatoAtual->anterior == NULL) {
                 deque->inicio = contatoAtual->proximo;
@@ -222,14 +253,14 @@ void removerContatoPorId(Deque *deque, int id) {
         }
         contatoAtual = contatoAtual->proximo;
     }
-
-    printf("Contato com ID %d não encontrado.\n", id);
+    deque->tamanho--;
+    printf("Contato com ID %d nao encontrado.\n", id);
 }
 
 int main() {
     Deque agenda;
     inicializar(&agenda);
-
+    criararquivo();
     int opcao;
     int escolhaid;
     do {
@@ -246,20 +277,28 @@ int main() {
         switch (opcao) {
             case 1:
                 adicionarContato(&agenda);
+                // inserirCSV(&agenda);
                 break;
             case 2:
                 imprimirContatos(&agenda);
+
                 break;
             case 3:
                 printf("Escolha o ID do contato que deseja remover: ");
                 scanf("%d", &escolhaid);
                 removerContatoPorId(&agenda, escolhaid);
+                
                 break;
             case 4:
+                inserirCSV(&agenda);
                 editarContato(&agenda);
                 break;
             case 5:
                 printf("Saindo...\n");
+                break;
+            case 6:
+                tamanhodeque(&agenda);
+                printf("%d",tamanhodeque(&agenda));
                 break;
             default:
                 printf("Opcao invalida.\n");
@@ -269,3 +308,4 @@ int main() {
 
     return 0;
 }
+    
