@@ -177,7 +177,7 @@ void editarContato(Deque *deque){
                 break;
             }
         }
-        if (contato == NULL) {  //A condição nunca vai ocorrer, mas o compilador não sabe disso
+        if (contato == NULL) {                  //A condição nunca vai ocorrer, mas o compilador não sabe disso
         printf("Contato não encontrado.\n"); //Ele so aconteceria se o contato fosse NULL, mas ele nunca é
     }                                        //porque o while só para quando o contato é NULL
         contato = contato->proximo;         //Tenta achar um jeito de rodar o while sem o contato ser NULL 👍👍
