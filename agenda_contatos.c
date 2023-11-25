@@ -81,7 +81,9 @@ Contato* removerFim(Deque *deque) {
 //função basica p adicionar um contato
 void adicionarContato(Deque *deque) {
     Contato *contato = malloc(sizeof(Contato));
-    printf("\n\n--- Adicionar Contatos ---\n");
+    printf("\n\n========================");
+    printf("\n   ADICIONAR CONTATOS\n");
+    printf("========================\n");
     printf("\nDigite o nome do contato: ");
     fgets(contato->nome, sizeof(contato->nome), stdin);
     contato->nome[strcspn(contato->nome, "\n")] = 0;
@@ -103,16 +105,56 @@ void adicionarContato(Deque *deque) {
 
 void imprimirContatos(Deque *deque) {
     Contato *contato = deque->inicio;
-        printf("\n\n--- Lista de Contatos ---\n");
+        printf("\n\n    ==============================");
+        printf("\n           LISTA DE CONTATOS  \n");
+        printf("    ==============================\n\n");
+        printf("Nome     Número     Endereço     Email\n");
+        printf("=======================================\n");
     while (contato != NULL) {
-        printf("Nome: %s\n", contato->nome);
+        printf("\nNome: %s\n", contato->nome);
         printf("Telefone: %s\n", contato->telefone);
         printf("Email: %s\n", contato->email);
         printf("Endereco: %s\n", contato->endereco);
-        printf("\n");
+        printf("=======================================\n");
         contato = contato->proximo;
     }
 }
+
+void buscarContato(Deque *deque) {
+  char contatoBusca[1000];
+  int escolhaMenu;
+  Contato *contato = deque->inicio;
+  
+  if (contato==NULL){
+      printf("\nA lista de contatos esta vazia. Tente Novamente.\n");
+      return;
+  }
+  
+  printf("\n\n=============================================");
+  printf("\nDigite o nome do contato que deseja procurar: ");
+  fgets(contatoBusca, sizeof(contatoBusca), stdin);
+  contatoBusca[strcspn(contatoBusca, "\n")] = 0;
+
+  if (strcmp(contato->nome, contatoBusca) == 0) {
+          printf("\nContato encontrado!\n\n");
+            printf("\n\n    ==============================");
+            printf("\n              CONTATO %s  \n", contato->nome);
+            printf("    ==============================\n\n");
+            printf("Nome     Número     Endereço     Email\n");
+            printf("=======================================\n");
+            printf("\nNome: %s", contato->nome);
+            printf("\nTelefone: %s", contato->telefone);
+            printf("\nEmail: %s", contato->email);
+            printf("\nEndereço: %s", contato->endereco);
+            printf("\n=======================================\n");
+          }
+    
+        else{  
+        printf("Contato não encontrado.\n");
+      }                                              
+}
+
+
 void removerContato(Deque *deque) {
     Contato *contato = removerInicio(deque);
     if (contato != NULL) {
@@ -140,8 +182,8 @@ void editarContato(Deque *deque){
 
     while (contato != NULL) {
         if (strcmp(contato->nome, contatoBusca) == 0) {
-            printf("Contato encontrado!\n");
-            printf("Escolha uma das opcoes abaixo:\n1. Editar Nome\n2. Editar Telefone\n3. Editar Email\n4. Editar Endereco\n");
+            printf("\nContato encontrado!\n\n");
+            printf("==============================\nEscolha uma das opcoes abaixo:\n==============================\n1. Editar Nome\n2. Editar Telefone\n3. Editar Email\n4. Editar Endereco\n-> ");
             scanf("%d", &escolhaMenu);
             getchar();
 
@@ -183,7 +225,7 @@ void editarContato(Deque *deque){
         contato = contato->proximo;         
     }
 
-    
+
 }
 
 int main() {
@@ -192,13 +234,16 @@ int main() {
 
     int opcao;
     do {
-        printf("--- Agenda de Contatos ---");
-        printf("\n1. Adicionar contato\n");
-        printf("2. Imprimir contatos\n");
-        printf("3. Remover contato\n");
-        printf("4. Editar contato\n");
-        printf("5. Sair\n\n");
-        printf("Escolha uma opcao: \n");
+        printf("\n\n    AGENDA DE CONTATOS\n");
+        printf("=========================");
+        printf("\n[1] Adicionar contato\n");
+        printf("[2] Listar contatos\n");
+        printf("[3] Buscar contato\n");
+        printf("[4] Remover contato\n");
+        printf("[5] Editar contato\n");
+        printf("[6] Sair\n");
+        printf("=========================\n");
+        printf("Insira escolha: ");
         scanf("%d", &opcao);
         getchar(); // Para consumir o '\n' deixado por scanf
 
@@ -210,19 +255,22 @@ int main() {
                 imprimirContatos(&agenda);
                 break;
             case 3:
-                removerContato(&agenda);
+                buscarContato(&agenda);
                 break;
             case 4:
-                editarContato(&agenda);
+                removerContato(&agenda);
                 break;
             case 5:
+                editarContato(&agenda);
+                break;
+            case 6:
                 printf("Saindo...\n");
                 break;
             default:
                 printf("Opcao invalida.\n");
                 break;
         }
-    } while (opcao != 5);
+    } while (opcao != 6);
 
     return 0;
 }
