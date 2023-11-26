@@ -101,8 +101,27 @@ void adicionarContato(Deque *deque) {
     contato->endereco[strcspn(contato->endereco, "\n")] = 0;
 
     adicionarFim(deque, contato);
-}
+    FILE *arquivo;
+    arquivo = fopen("contatos.csv","a");
 
+    if(arquivo == NULL){
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+    fprintf(arquivo,"%s,%d,%s,%s", contato->nome,contato->telefone,contato->email,contato->endereco);
+    fclose(arquivo);
+}
+//função para adicionar contato no csv
+void adicionarContatoCSV(Contato *contato){
+    FILE *arquivo;
+    arquivo = fopen("contatos.csv","a");
+
+    if(arquivo == NULL){
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+    fprintf(arquivo,"%s,%d,%s,%s")
+}
 void imprimirContatos(Deque *deque) {
     Contato *contato = deque->inicio;
         printf("\n\n    ==============================");
