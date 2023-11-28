@@ -96,7 +96,7 @@ void adicionarContato(Deque *deque) {
             maiorid = atual->ID;
         }
         atual = atual->proximo;
-        
+
     }
 
     contato->ID = maiorid + 1;
@@ -170,39 +170,41 @@ void imprimirContatos(Deque *deque) {
 }
 
 void buscarContato(Deque *deque) {
-  char contatoBusca[1000];
-//   int escolhaMenu;
-  Contato *contato = deque->inicio;
-  
-  if (contato==NULL){
-      printf("\nA lista de contatos esta vazia. Tente Novamente.\n");
-      return;
-  }
-  
-  printf("\n\n=============================================");
-  printf("\nDigite o nome do contato que deseja procurar: ");
-  fgets(contatoBusca, sizeof(contatoBusca), stdin);
-  contatoBusca[strcspn(contatoBusca, "\n")] = 0;
+    char contatoBusca[1000];
+    Contato *contato = deque->inicio;
 
-  if (strcmp(contato->nome, contatoBusca) == 0) {
-          printf("\nContato encontrado!\n\n");
+    if (contato == NULL) {
+        printf("\nA lista de contatos está vazia. Tente Novamente.\n");
+        return;
+    }
+
+    printf("\n\n=============================================");
+    printf("\nDigite o nome do contato que deseja procurar: ");
+    fgets(contatoBusca, sizeof(contatoBusca), stdin);
+    contatoBusca[strcspn(contatoBusca, "\n")] = 0;
+
+    while (contato != NULL) {
+        if (strcmp(contato->nome, contatoBusca) == 0) {
+            printf("\nContato encontrado!\n\n");
             printf("\n\n    ==============================");
-            printf("\n              CONTATO %s  \n", contato->nome);
+            printf("\n            CONTATO %s  \n", contato->nome);
             printf("    ==============================\n\n");
             printf("ID     Nome     Número     Endereço     Email\n");
             printf("=======================================\n");
-            printf("\nID: %d",contato->ID);
+            printf("\nID: %d", contato->ID);
             printf("\nNome: %s", contato->nome);
             printf("\nTelefone: %s", contato->telefone);
             printf("\nEmail: %s", contato->email);
             printf("\nEndereço: %s", contato->endereco);
             printf("\n=======================================\n");
-          }
-    
-        else{  
-        printf("Contato não encontrado.\n");
-      }                                              
+            return;
+        }
+        contato = contato->proximo;
+    }
+
+    printf("Contato não encontrado.\n");
 }
+
 void removerContato(Deque *deque, int id) {
     //armazena o contato que erá removido
     Contato *contatoRemovido = NULL;
